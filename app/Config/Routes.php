@@ -43,11 +43,8 @@ $routes->get('/', function (){
 });
 
 $routes->get('/admin', 'Templating::index');
-
 $routes->get('/register', 'Templating::register');
-
 $routes->post('/saveRegister', 'Templating::saveRegister');
-
 $routes->get('/posts', 'PostController::index');
 
 $routes->get('/about', function (){ 
@@ -55,11 +52,17 @@ $routes->get('/about', function (){
 		'title' => "Blog - About"
 	];
 	echo view('layouts/header', $data);
-    echo view('layouts/navbar');
+	echo view('layout/header');
+    echo view('layout/navbar');
 	echo view('v_about');
-    echo view('layouts/footer');
+    echo view('layout/footer');
 	//supaya gk kebanyakan controller
 });
+
+$routes->get('/admin', 'Templating::index');
+$routes->get('/admin/posts', 'AdminPostController::index');
+$routes->get('/admin/posts/create', 'AdminPostController::create');
+$routes->post('/admin/posts/store', 'AdminPostController::store');
 
 /*
  * --------------------------------------------------------------------
