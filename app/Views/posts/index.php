@@ -160,10 +160,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/assets/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="/assets/images/cindy.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">Cindy</a>
         </div>
       </div>
 
@@ -229,7 +229,19 @@
 
     <!-- /.Main-content -->
     <div class="container">
-        <a href="/admin/posts/create" class="btn btn-primary"><i class="fas fa-plus">Tambah Data</i></a>
+      <?php if(session()->getFlashdata('pesan')) : ?>
+        <div class="alert text-danger" role="alert">
+          <strong><h5><?= session()->getFlashdata('pesan'); ?></h5></strong>
+        </div>
+        <script>
+          window.setTimeout(function() {
+            $(".alert").fadeTo(300, 0).slideUp(300, function(){
+              $(this).remove(); 
+            });
+          }, 3000);
+        </script>
+      <?php endif; ?>
+      <a href="/admin/posts/create" class="btn btn-primary"><i class="fas fa-plus">Tambah Data</i></a>  
         <div class="card mt-3">
           <div class="card-header">
             Daftar Postingan
@@ -256,8 +268,11 @@
                   <td><?= $post['kategori']; ?></td>
                   <td><?= $post['author']; ?></td>
                   <td align-middle>
-                    <a href="/admin/posts/edit/<?= $post['slug']; ?>" class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
-                    <a href="/admin/posts/delete/<?= $post['slug']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i>Delete</a>
+                    <a href="<?= ("/admin/posts/edit/".$post['post_id']); ?>" class="btn btn-warning"><i class="fas fa-edit"></i>Edit</a>
+                    <form action="/admin/posts/<?= $post['post_id']; ?>" method="POST" class="d-inline">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-danger" onclick="return confirm('apakah anda yakin?');"><i class="fas fa-trash"></i>Delete</button>
+                    </form>
                   </td>
                 </tr>
                 <?php endforeach; ?>

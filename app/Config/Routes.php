@@ -32,38 +32,39 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', function (){
-	$data = [
-		'title' => "Blog - Home"
-	];
-	echo view('layouts/header', $data);
-	echo view('layouts/navbar');
-	echo view('v_home');
-	echo view('layouts/footer');;
-});
+//$routes->get('/', function(){
+//	$data = [
+//		'title' => "Blog - Home"
+//	];
+//	echo view('layout/header', $data);
+//	echo view('layout/header');
+//	echo view('layout/navbar');
+//	echo view('v_home');
+//	echo view('layout/footer');
+//});
 
-$routes->get('/admin', 'Templating::index');
-$routes->get('/register', 'Templating::register');
-$routes->post('/saveRegister', 'Templating::saveRegister');
+$routes->get('/register', 'T_register::index');
+$routes->post('/saveRegister', 'T_register::saveRegister');
 $routes->get('/posts', 'PostController::index');
 
-$routes->get('/about', function (){ 
+$routes->get('/about', function(){
 	$data = [
 		'title' => "Blog - About"
 	];
-	echo view('layouts/header', $data);
+	echo view('layout/header', $data);
 	echo view('layout/header');
-    echo view('layout/navbar');
+	echo view('layout/navbar');
 	echo view('v_about');
-    echo view('layout/footer');
-	//supaya gk kebanyakan controller
+	echo view('layout/footer');
 });
 
 $routes->get('/admin', 'Templating::index');
 $routes->get('/admin/posts', 'AdminPostController::index');
 $routes->get('/admin/posts/create', 'AdminPostController::create');
+$routes->delete('/admin/posts/(:num)', 'AdminPostController::delete/$1');
+$routes->get('/admin/posts/edit/(:segment)', 'AdminPostController::edit/$1');
+$routes->post('/admin/posts/update/(:num)', 'AdminPostController::update/$1');
 $routes->post('/admin/posts/store', 'AdminPostController::store');
-
 /*
  * --------------------------------------------------------------------
  * Additional Routing

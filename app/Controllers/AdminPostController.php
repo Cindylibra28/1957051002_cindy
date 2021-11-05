@@ -76,9 +76,43 @@ class AdminPostController extends BaseController
 
 			$PostModel = model("PostModel");
 			$PostModel->insert($data);
+
+			session()->setFlashdata('pesan', 'Data Berhasil Ditambahkan!!');
 			return redirect()->to(base_url('admin/posts'));
 		}else {
-			return redirect()->to(base_url('admin/posts/create'))->withInput()->with('valdation', $this->validator);
+			return redirect()->to(base_url('admin/posts/create'))->withInput()->with('validation', $this->validator);
 		}
+	}
+
+	public function delete($post_id)
+	{
+		$PostModel = model('PostModel');
+		$PostModel->delete($post_id);
+		session()->setFlashdata('pesan', 'Data Berhasil Dihapus!!');
+		return redirect()->to(base_url('admin/posts'));
+	}
+
+	public function edit($post_id)
+	{
+		$PostModel = model('PostModel');
+		session();
+		$data = [
+			'post' => $PostModel -> find($post_id)
+		];
+		return view("posts/edit", $data);
+	}
+
+	public function update($post_id)
+	{
+		$PostModel = model('PostModel');
+		$data=[
+			'judul' => $this->request->getPost('judul'),
+			'slug' => $this->request->getPost('slug'),
+			'kategori' => $this->request->getPost('kategori'),
+			'author' => $this->request->getPost('author'),
+			'deskripsi' => $this->request->getPost('deskripsi')
+		];
+		$PostModel->update($post_id, $data);
+		return redirect()->to(base_url('admin/posts'))->with('pesan', 'Data Berhasil diubah!!');
 	}
 }
